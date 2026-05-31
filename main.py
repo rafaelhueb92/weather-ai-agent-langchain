@@ -15,7 +15,7 @@ def get_weather(city: str) -> str:
     print(
         f"Using OpenWeather API key: {api_key[:4]}..."
     )  # Print only the first 4 characters for security
-    base_url = "http://api.openweathermap.org/data/2.5/weather"
+    base_url = "https://api.openweathermap.org/data/2.5/weather"
     params = {"q": city, "appid": api_key, "units": "metric"}
 
     response = requests.get(base_url, params=params)
