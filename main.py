@@ -1,5 +1,6 @@
 from langchain.agents import create_agent
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langgraph.checkpoint.memory import InMemorySaver
 from dotenv import load_dotenv
 from os import getenv
 
@@ -49,13 +50,16 @@ YOUR WORKFLOW:
     1. If the user asks for the weather without specifying a location, use the get_location tool
     2. Use the get_weather tool to fetch the weather information for the specified location.
     3. Answer a tip based on the weather conditions. For example, if it's sunny, 
-       you might say "It's a great day to go outside!" If it's rainy, you might say "Don't forget your umbrella!", and so on.
+       you might say "It's a great day to go outside!" If it's rainy, you might say "Don't forget your umbrella!", and so on, and a tip about the vest they should wear. For example, if it's cold, you might say "Make sure to wear a warm vest!" If it's hot, you might say "A light vest would be perfect for today!"
 Everything asked that's not related to the weather should be politely declined with a message like "I'm here to help with weather information. Please ask about the weather!"
 """
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.7)
 agent = create_agent(
-    model=llm, tools=[get_weather, get_location], system_prompt=system_prompt
+    model=llm,
+    tools=[get_weather, get_location],
+    system_prompt=system_prompt,
+    checkpointer=InMemorySaver(),
 )
 
 if __name__ == "__main__":
@@ -66,7 +70,14 @@ if __name__ == "__main__":
 
         if human_query.lower().lstrip() != "exit":
             response = agent.invoke(
-                {"messages": [{"role": "user", "content": human_query}]}
+                {
+                    "messages": [{"role": "user", "content": human_query}],
+                },
+                {
+                    "configurable": {
+                        "thread_id": "1",
+                    },
+                },
             )
 
-            print(response["messages"][-1].content)
+            print(response["messages"][-1].content[0])
