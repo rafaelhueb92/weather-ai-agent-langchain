@@ -1,18 +1,12 @@
 from langchain.agents import create_agent
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.checkpoint.memory import InMemorySaver
 from dotenv import load_dotenv
-from os import getenv, makedirs
+from os import getenv
 
 import requests
 
 load_dotenv()
-
-SUPERBASE_DB_URI = getenv("SUPERBASE_DB_URI")
-
-
-def ensure_db_folder() -> None:
-    makedirs("db", exist_ok=True)
 
 
 def get_weather(city: str) -> str:
@@ -50,10 +44,7 @@ def get_location() -> str:
     return city
 
 
-if __name__ == "__main__":
-    ensure_db_folder()
-
-    system_prompt = """
+system_prompt = """
 You are a helpful assistant that provides weather information. 
 YOUR WORKFLOW:
     1. If the user asks for the weather without specifying a location, use the get_location tool
@@ -63,32 +54,33 @@ YOUR WORKFLOW:
 Everything asked that's not related to the weather, location or trying to certfied that's the information is correct should be politely declined with a message like "I'm here to help with weather information. Please ask about the weather!"
 """
 
-    with SqliteSaver.from_conn_string("db/checkpoints.db") as checkpointer:
-        llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.7)
-        agent = create_agent(
-            model=llm,
-            tools=[get_weather, get_location],
-            system_prompt=system_prompt,
-            checkpointer=checkpointer,
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.7)
+agent = create_agent(
+    model=llm,
+    tools=[get_weather, get_location],
+    system_prompt=system_prompt,
+    checkpointer=InMemorySaver(),
+)
+
+if __name__ == "__main__":
+    human_query = ""
+
+    while True:
+        human_query = input("Ask about the weather: ")
+
+        if human_query in ["exit", "quit"]:
+            print("Goodbye!")
+            break
+
+        response = agent.invoke(
+            {
+                "messages": [{"role": "user", "content": human_query}],
+            },
+            {
+                "configurable": {
+                    "thread_id": "1",
+                },
+            },
         )
 
-        while True:
-            human_query = input("Ask about the weather: ")
-
-            if human_query in ["exit", "quit"]:
-                print("Goodbye!")
-                break
-
-            response = agent.invoke(
-                {
-                    "messages": [{"role": "user", "content": human_query}],
-                },
-                {
-                    "configurable": {
-                        "thread_id": "1",
-                    },
-                },
-            )
-
-            for msg in response["messages"]:
-                print(msg["content"][0]["text"])
+            print(response["messages"])

@@ -1,6 +1,6 @@
 from langchain.agents import create_agent
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.checkpoint.postgres import PostgresSaver
 from dotenv import load_dotenv
 from os import getenv, makedirs
 
@@ -63,7 +63,8 @@ YOUR WORKFLOW:
 Everything asked that's not related to the weather, location or trying to certfied that's the information is correct should be politely declined with a message like "I'm here to help with weather information. Please ask about the weather!"
 """
 
-    with SqliteSaver.from_conn_string("db/checkpoints.db") as checkpointer:
+    with PostgresSaver.from_conn_string(SUPERBASE_DB_URI) as checkpointer:
+        checkpointer.setup()
         llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.7)
         agent = create_agent(
             model=llm,

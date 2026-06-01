@@ -21,6 +21,12 @@ dist/
 *.egg
 pip-wheel-metadata/
 
+# Database files
+db/
+*.db
+*.sqlite
+*.sqlite3
+
 # Test and coverage outputs
 .pytest_cache/
 .coverage

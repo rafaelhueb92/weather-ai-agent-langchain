@@ -1,22 +1,29 @@
-# Weather Agent (LangChain + Gemini)
+# 🌦️ Weather Agent (LangChain + Gemini)
 
-A simple CLI weather assistant built with LangChain and Google Gemini.
+[![Python](https://img.shields.io/badge/Python-3.11%2B-blue)](https://www.python.org/)
+[![LangChain](https://img.shields.io/badge/LangChain-Agent-green)](https://python.langchain.com/)
+[![Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-orange)](https://ai.google.dev/)
+[![OpenWeather](https://img.shields.io/badge/OpenWeather-API-yellow)](https://openweathermap.org/api)
+[![SQLite](https://img.shields.io/badge/SQLite-Checkpoint%20Memory-003B57)](https://www.sqlite.org/index.html)
 
-## What it does
+A CLI weather assistant built with LangChain, Google Gemini, and OpenWeather. ☁️
 
-- Answers weather questions in natural language.
-- Uses tools to:
-  - detect your current city (`get_location`) when you don’t provide one
-  - fetch weather data from OpenWeather (`get_weather`)
-- Declines non-weather questions.
+## ✨ What it does
 
-## Requirements
+- 💬 Answers weather questions in natural language
+- 🧰 Uses tools to:
+  - 📍 detect your current city (`get_location`) when no city is provided
+  - 🌡️ fetch current weather from OpenWeather (`get_weather`)
+- 🗂️ Stores conversation checkpoints in SQLite (`db/checkpoints.db`)
+- 🚫 Declines non-weather questions
 
-- Python 3.11+
-- A Google AI API key (for Gemini)
-- An OpenWeather API key
+## ✅ Requirements
 
-## Installation
+- 🐍 Python 3.11+
+- 🔑 Google AI API key (Gemini)
+- 🔑 OpenWeather API key
+
+## 🛠️ Installation
 
 ```bash
 python -m venv .venv
@@ -24,7 +31,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Environment variables
+## 🔐 Environment variables
 
 Create a `.env` file in the project root:
 
@@ -33,22 +40,39 @@ GOOGLE_API_KEY=your_google_ai_api_key
 OPENWEATHER_API_KEY=your_openweather_api_key
 ```
 
-You can also copy from the example file if present:
+If available, you can start from:
 
 ```bash
 cp .env.example .env
 ```
 
-## Run
+## ▶️ Run
 
 ```bash
 python main.py
 ```
 
-Type your weather question (for example: `What’s the weather in Lisbon?`).
-Type `exit` to quit.
+When the app starts, it automatically creates the `db/` folder if it does not exist. 📁
 
-## Notes
+Ask questions like:
 
-- `main.py` currently logs part of the OpenWeather key prefix for debugging.
-- Weather source endpoint used: OpenWeather current weather API.
+- `What is the weather in Tokyo?`
+- `How is the weather today?`
+
+Type `exit` or `quit` to stop. 👋
+
+## 🗃️ Data and git ignore
+
+- SQLite checkpoints are stored in `db/checkpoints.db`
+- `db/` and common SQLite file extensions are ignored in `.gitignore`
+
+## 📝 Notes
+
+- `main.py` logs a short prefix of the OpenWeather key for debugging
+- Weather endpoint used: OpenWeather Current Weather API
+
+---
+
+<p align="center">
+  Made with ❤️ using Python, LangChain, Gemini, and OpenWeather
+</p>
