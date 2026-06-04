@@ -6,7 +6,7 @@
 [![OpenWeather](https://img.shields.io/badge/OpenWeather-API-yellow)](https://openweathermap.org/api)
 [![SQLite](https://img.shields.io/badge/SQLite-Checkpoint%20Memory-003B57)](https://www.sqlite.org/index.html)
 
-A CLI weather assistant built with LangChain, Google Gemini, and OpenWeather. ☁️
+A weather assistant built with LangChain, Google Gemini, and OpenWeather, available in both CLI and web chat modes. ☁️
 
 ## ✨ What it does
 
@@ -15,6 +15,7 @@ A CLI weather assistant built with LangChain, Google Gemini, and OpenWeather. �
   - 📍 detect your current city (`get_location`) when no city is provided
   - 🌡️ fetch current weather from OpenWeather (`get_weather`)
 - 🗂️ Stores conversation checkpoints in SQLite (`db/checkpoints.db`)
+- 🌙 Includes a dark-themed web chat UI
 - 🚫 Declines non-weather questions
 
 ## ✅ Requirements
@@ -48,9 +49,13 @@ cp .env.example .env
 
 ## ▶️ Run
 
+### Web app
+
 ```bash
-python main.py
+python app.py
 ```
+
+Open `http://127.0.0.1:5000` in your browser.
 
 When the app starts, it automatically creates the `db/` folder if it does not exist. 📁
 
@@ -68,7 +73,8 @@ Type `exit` or `quit` to stop. 👋
 
 ## 📝 Notes
 
-- `main.py` logs a short prefix of the OpenWeather key for debugging
+- `app.py` uses the configured LangChain weather agent from `agent.py`
+- Flask static assets are served from `static/` and templates from `templates/`
 - Weather endpoint used: OpenWeather Current Weather API
 
 ---

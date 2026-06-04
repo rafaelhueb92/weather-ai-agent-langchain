@@ -11,10 +11,6 @@ load_dotenv()
 SUPERBASE_DB_URI = getenv("SUPERBASE_DB_URI")
 
 
-def ensure_db_folder() -> None:
-    makedirs("db", exist_ok=True)
-
-
 def get_weather(city: str) -> str:
     """Get the current weather for a given location."""
     print(f"Fetching weather data for {city}...")
@@ -29,6 +25,7 @@ def get_weather(city: str) -> str:
     print(f"Weather API response status: {response.status_code}")
     if response.status_code == 200:
         data = response.json()
+        print(f"Weather API response data: {data}")
         temperature = data["main"]["temp"]
         description = data["weather"][0]["description"]
         return f"{city}: {description}, {temperature}°C"
@@ -46,13 +43,13 @@ def get_location() -> str:
 
     if response.status_code == 200:
         data = response.json()
+        print(f"Location API response: {data}")
         city = data.get("city", "Unknown")
+    print(f"Final inferred location: {city}")
     return city
 
 
 if __name__ == "__main__":
-    ensure_db_folder()
-
     system_prompt = """
 You are a helpful assistant that provides weather information. 
 YOUR WORKFLOW:

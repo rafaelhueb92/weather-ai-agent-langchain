@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+</head>
+<body>
+    <main class="app">
+        <header class="app-header">
+            <div class="title-wrap">
+                <h1 class="title">🌤️ Weather Assistant</h1>
+                <p class="subtitle">Dark mode chat for fast weather answers</p>
+            </div>
+            <a href="/clear" class="clear-btn">New Conversation</a>
+        </header>
+
+        <section class="chat-scroll" id="chatScroll">
+            <div class="chat-box" id="chatBox">
+                {% if messages %}
+                    {% for msg in messages %}
+                        {% if msg.type == 'human' %}
+                            <div class="message user">{{ msg.content }}</div>
+                        {% elif msg.type == 'ai' %}
+                            <div class="message agent">{{ msg.content }}</div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p class="empty">Start by asking for the weather in your city.</p>
+                {% endif %}
+                <div class="message agent processing" id="processingIndicator" aria-live="polite" aria-hidden="true">
+                    <span>Thinking</span>
+                    <span class="typing-dots" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <section class="composer">
+            <form method="POST" action="/send" class="input-form" id="chatForm">
+                <textarea class="prompt" name="message" placeholder="Type your message..." required></textarea>
+                <button type="submit" class="send-btn">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html>
