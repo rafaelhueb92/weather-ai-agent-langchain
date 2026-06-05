@@ -4,7 +4,7 @@
 [![LangChain](https://img.shields.io/badge/LangChain-Agent-green)](https://python.langchain.com/)
 [![Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-orange)](https://ai.google.dev/)
 [![OpenWeather](https://img.shields.io/badge/OpenWeather-API-yellow)](https://openweathermap.org/api)
-[![SQLite](https://img.shields.io/badge/SQLite-Checkpoint%20Memory-003B57)](https://www.sqlite.org/index.html)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Checkpoint%20Memory-336791)](https://www.postgresql.org/)
 
 A weather assistant built with LangChain, Google Gemini, and OpenWeather, available in both CLI and web chat modes. ☁️
 
@@ -14,7 +14,7 @@ A weather assistant built with LangChain, Google Gemini, and OpenWeather, availa
 - 🧰 Uses tools to:
   - 📍 detect your current city (`get_location`) when no city is provided
   - 🌡️ fetch current weather from OpenWeather (`get_weather`)
-- 🗂️ Stores conversation checkpoints in SQLite (`db/checkpoints.db`)
+- 🗂️ Stores conversation checkpoints in PostgreSQL (configured via `SUPERBASE_DB_URI`)
 - 🌙 Includes a dark-themed web chat UI
 - 🚫 Declines non-weather questions
 
@@ -39,6 +39,7 @@ Create a `.env` file in the project root:
 ```env
 GOOGLE_API_KEY=your_google_ai_api_key
 OPENWEATHER_API_KEY=your_openweather_api_key
+SUPERBASE_DB_URI=postgresql://user:password@host:5432/database
 ```
 
 If available, you can start from:
@@ -57,8 +58,6 @@ python app.py
 
 Open `http://127.0.0.1:5000` in your browser.
 
-When the app starts, it automatically creates the `db/` folder if it does not exist. 📁
-
 Ask questions like:
 
 - `What is the weather in Tokyo?`
@@ -66,10 +65,11 @@ Ask questions like:
 
 Type `exit` or `quit` to stop. 👋
 
-## 🗃️ Data and git ignore
+## 🗃️ Checkpoints
 
-- SQLite checkpoints are stored in `db/checkpoints.db`
-- `db/` and common SQLite file extensions are ignored in `.gitignore`
+- Conversation checkpoints are stored in PostgreSQL via `SUPERBASE_DB_URI`
+- Ensure the PostgreSQL database is reachable before starting the app
+- The agent initializes checkpoint tables automatically on startup
 
 ## 📝 Notes
 

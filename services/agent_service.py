@@ -1,12 +1,13 @@
+from os import getenv
+
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.checkpoint.postgres import PostgresSaver
 
-from services.weather_tools import ensure_db_folder, get_location, get_weather
+from services.weather_tools import get_location, get_weather
 
 load_dotenv()
-ensure_db_folder()
 
 
 SYSTEM_PROMPT = """
@@ -19,8 +20,14 @@ YOUR WORKFLOW:
 Everything asked that's not related to the weather, location or trying to certfied that's the information is correct should be politely declined with a message like "I'm here to help with weather information. Please ask about the weather!"
 """
 
-connection = SqliteSaver.from_conn_string("db/checkpoints.db")
+SUPERBASE_DB_URI = getenv("SUPERBASE_DB_URI")
+
+if not SUPERBASE_DB_URI:
+    raise ValueError("SUPERBASE_DB_URI environment variable is required")
+
+connection = PostgresSaver.from_conn_string(SUPERBASE_DB_URI)
 checkpointer = connection.__enter__()
+checkpointer.setup()
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.7)
 agent = create_agent(
