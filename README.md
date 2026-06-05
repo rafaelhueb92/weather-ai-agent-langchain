@@ -8,7 +8,7 @@
 
 A weather assistant built with LangChain, Google Gemini, and OpenWeather, available in both CLI and web chat modes. ☁️
 
-![Weather Agent Screenshot](images/print_sp_ny.png)
+<div height="200" width="200">![Weather Agent Screenshot](images/print_sp_ny.png)</div>
 
 ## ✨ What it does
 
