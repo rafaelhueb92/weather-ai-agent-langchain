@@ -1,7 +1,5 @@
 # 🌦️ Weather Agent (LangChain + Gemini)
 
-![Weather Agent Screenshot](images/print_sp_ny.png)
-
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue)](https://www.python.org/)
 [![LangChain](https://img.shields.io/badge/LangChain-Agent-green)](https://python.langchain.com/)
 [![Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-orange)](https://ai.google.dev/)
@@ -9,6 +7,8 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Checkpoint%20Memory-336791)](https://www.postgresql.org/)
 
 A weather assistant built with LangChain, Google Gemini, and OpenWeather, available in both CLI and web chat modes. ☁️
+
+![Weather Agent Screenshot](images/print_sp_ny.png)
 
 ## ✨ What it does
 
